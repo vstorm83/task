@@ -11,7 +11,17 @@
   <component>
     <key>org.exoplatform.task.service</key>
     <type>org.exoplatform.task.service.impl.TaskParserImpl</type>
-  </component>    
+  </component>
+  
+  <external-component-plugins>
+    <target-component>org.exoplatform.calendar.service.CalendarService</target-component>
+    <component-plugin>
+      <name>calendar.db.dao</name>
+      <set-method>addDAOPlugin</set-method>
+      <type>org.exoplatform.task.integration.DBCalendarDAOImpl</type>
+      <description>calendar dao implemented for RDBMS</description>      
+    </component-plugin>
+  </external-component-plugins>
   
   <external-component-plugins>
     <target-component>org.exoplatform.social.core.manager.ActivityManager</target-component>

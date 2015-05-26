@@ -117,6 +117,12 @@
       </dependency>
 
       <dependency>
+        <groupId>org.exoplatform.calendar</groupId>
+        <artifactId>calendar-service</artifactId>
+        <version>${platform.version}</version>
+      </dependency>
+
+      <dependency>
         <groupId>org.exoplatform.commons</groupId>
         <artifactId>commons-juzu</artifactId>
         <version>${platform.version}</version>
