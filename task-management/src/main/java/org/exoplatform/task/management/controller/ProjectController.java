@@ -605,7 +605,7 @@ public class ProjectController extends AbstractController {
   @Ajax
   @MimeType("text/plain")
   public Response deleteProject(Long projectId, Boolean deleteChild) throws EntityNotFoundException {
-    projectService.deleteProject(projectId, deleteChild); //Can throw ProjectNotFoundException
+    projectService.removeProject(projectId, deleteChild); //Can throw ProjectNotFoundException
     return Response.ok("Delete project successfully");
   }
 

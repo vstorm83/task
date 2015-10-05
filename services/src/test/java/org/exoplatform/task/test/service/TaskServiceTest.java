@@ -273,7 +273,7 @@ public class TaskServiceTest {
 
   @Test
   public void testDeleteTaskById() throws EntityNotFoundException {
-    taskService.deleteTask(TestUtils.EXISTING_TASK_ID);
+    taskService.removeTask(TestUtils.EXISTING_TASK_ID);
     verify(taskHandler, times(1)).delete(taskCaptor.capture());
 
     assertEquals(TestUtils.EXISTING_TASK_ID, taskCaptor.getValue().getId());
@@ -318,7 +318,7 @@ public class TaskServiceTest {
 
   @Test
   public void testDeleteCommentById() throws EntityNotFoundException {
-    taskService.deleteComment(TestUtils.EXISTING_COMMENT_ID);
+    taskService.removeComment(TestUtils.EXISTING_COMMENT_ID);
     verify(commentHandler, times(1)).delete(commentCaptor.capture());
 
     assertEquals(TestUtils.EXISTING_COMMENT_ID, commentCaptor.getValue().getId());
@@ -331,6 +331,6 @@ public class TaskServiceTest {
 
   @Test(expected = EntityNotFoundException.class)
   public void testCommentNotFoundException() throws EntityNotFoundException {
-    taskService.deleteComment(TestUtils.UNEXISTING_COMMENT_ID);
+    taskService.removeComment(TestUtils.UNEXISTING_COMMENT_ID);
   }
 }

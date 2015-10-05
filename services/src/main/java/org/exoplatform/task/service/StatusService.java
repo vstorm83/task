@@ -26,7 +26,7 @@ public interface StatusService {
     
   Status createStatus(Project project, String status);
   
-  Status deleteStatus(long statusId) throws EntityNotFoundException, NotAllowedOperationOnEntityException;
+  Status removeStatus(long statusId) throws EntityNotFoundException, NotAllowedOperationOnEntityException;
   
   Status updateStatus(long statusId, String statusName) throws EntityNotFoundException, NotAllowedOperationOnEntityException;
 }

@@ -79,9 +79,9 @@ public class TestTasksStorage extends AbstractTest {
     PortalContainer container = PortalContainer.getInstance();
 
     ProjectService projectService = container.getComponentInstanceOfType(ProjectService.class);
-    projectService.deleteProject(p1.getId(), true);
-    projectService.deleteProject(p2.getId(), true);
-    projectService.deleteProject(p3.getId(), true);
+    projectService.removeProject(p1.getId(), true);
+    projectService.removeProject(p2.getId(), true);
+    projectService.removeProject(p3.getId(), true);
   }
   
   @Test

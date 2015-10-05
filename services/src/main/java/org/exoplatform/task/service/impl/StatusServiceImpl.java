@@ -127,7 +127,7 @@ public class StatusServiceImpl implements StatusService {
 
   @Override
   @ExoTransactional
-  public Status deleteStatus(long statusID) throws EntityNotFoundException, NotAllowedOperationOnEntityException {
+  public Status removeStatus(long statusID) throws EntityNotFoundException, NotAllowedOperationOnEntityException {
     StatusHandler handler = daoHandler.getStatusHandler();
     Status st = handler.find(statusID);
     if (st == null) {

@@ -126,7 +126,7 @@ public class LabelController {
     String username = securityContext.getRemoteUser();
     Label label = taskService.getLabelById(labelId);
     if (label != null && label.getUsername().equals(username)) {
-      taskService.deleteLabel(labelId);
+      taskService.removeLabel(labelId);
       return Response.ok();
     } else {
       return Response.status(401);

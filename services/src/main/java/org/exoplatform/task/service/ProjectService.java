@@ -43,7 +43,7 @@ public interface ProjectService {
 
   Project updateProject(Project project);
 
-  void deleteProject(long projectId, boolean deleteChild) throws EntityNotFoundException;
+  void removeProject(long projectId, boolean deleteChild) throws EntityNotFoundException;
 
   Project cloneProject(long projectId, boolean cloneTask) throws EntityNotFoundException;
 

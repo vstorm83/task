@@ -16,20 +16,13 @@
 */
 package org.exoplatform.task.service.impl;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import org.apache.poi.poifs.property.Child;
 import org.exoplatform.commons.api.persistence.ExoTransactional;
 import org.exoplatform.commons.utils.ListAccess;
 import org.exoplatform.services.log.ExoLogger;
@@ -41,7 +34,6 @@ import org.exoplatform.task.domain.Project;
 import org.exoplatform.task.domain.Status;
 import org.exoplatform.task.domain.Task;
 import org.exoplatform.task.exception.EntityNotFoundException;
-import org.exoplatform.task.exception.ParameterEntityException;
 import org.exoplatform.task.service.ProjectService;
 import org.exoplatform.task.service.StatusService;
 import org.exoplatform.task.service.TaskService;
@@ -117,10 +109,10 @@ public class ProjectServiceImpl implements ProjectService {
 
   @Override
   @ExoTransactional
-  public void deleteProject(long id, boolean deleteChild) throws EntityNotFoundException {
+  public void removeProject(long id, boolean deleteChild) throws EntityNotFoundException {
     Project project = getProject(id);
     if (project == null) throw new EntityNotFoundException(id, Project.class);
-    daoHandler.getProjectHandler().deleteProject(id, deleteChild);
+    daoHandler.getProjectHandler().removeProject(id, deleteChild);
   }
 
   @Override

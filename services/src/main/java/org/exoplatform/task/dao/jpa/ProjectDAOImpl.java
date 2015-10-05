@@ -66,7 +66,7 @@ public class ProjectDAOImpl extends CommonJPADAO<Project, Long> implements Proje
   }
 
   @Override
-  public Project deleteProject(long projectId, boolean deleteChild) {
+  public Project removeProject(long projectId, boolean deleteChild) {
     Project p = getEntityManager().find(Project.class, projectId);
     if (p == null) {
       return null;

@@ -27,7 +27,7 @@ public interface TaskService {
 
   void updateTaskOrder(long currentTaskId, Status newStatus, long[] orders);
 
-  void deleteTask(long taskId) throws EntityNotFoundException;
+  void removeTask(long taskId) throws EntityNotFoundException;
 
   Task cloneTask(long taskId) throws EntityNotFoundException;
 
@@ -37,7 +37,7 @@ public interface TaskService {
 
   Comment addComment(long taskId, String username, String commentText) throws EntityNotFoundException;
 
-  void deleteComment(long commentId) throws EntityNotFoundException;
+  void removeComment(long commentId) throws EntityNotFoundException;
 
   ListAccess<Task> findTasks(TaskQuery query);
 
@@ -67,7 +67,7 @@ public interface TaskService {
   
   Label updateLabel(Label label, List<Label.FIELDS> fields) throws EntityNotFoundException;
 
-  void deleteLabel(long labelId);
+  void removeLabel(long labelId);
 
   ListAccess<TaskLog> getTaskLogs(long taskId);
 

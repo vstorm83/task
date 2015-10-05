@@ -280,8 +280,8 @@ public class ProjectServiceTest {
     when(projectHandler.find(3L)).thenReturn(projectParent);
     when(projectHandler.findSubProjects(projectParent)).thenReturn(projectChilds);
 
-    projectService.deleteProject(3L, false);
-    verify(projectHandler, times(1)).deleteProject(eq(3L), eq(false));
+    projectService.removeProject(3L, false);
+    verify(projectHandler, times(1)).removeProject(eq(3L), eq(false));
   }
 
   @Test
@@ -298,8 +298,8 @@ public class ProjectServiceTest {
 
     when(projectHandler.find(3L)).thenReturn(projectParent);
 
-    projectService.deleteProject(3L, true);
-    verify(projectHandler, times(1)).deleteProject(eq(3L), eq(true));
+    projectService.removeProject(3L, true);
+    verify(projectHandler, times(1)).removeProject(eq(3L), eq(true));
   }
 
   @Test

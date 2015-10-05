@@ -209,7 +209,7 @@ public class TaskController extends AbstractController {
   @Ajax
   @MimeType.JSON
   public Response delete(Long id) throws EntityNotFoundException, JSONException {
-    taskService.deleteTask(id);//Can throw TaskNotFoundException
+    taskService.removeTask(id);//Can throw TaskNotFoundException
 
     JSONObject json = new JSONObject();
     json.put("id", id); //Can throw JSONException
@@ -333,7 +333,7 @@ public class TaskController extends AbstractController {
   @Ajax
   @MimeType("text/plain")
   public Response deleteComment(Long commentId) throws EntityNotFoundException {
-    taskService.deleteComment(commentId); //Can throw CommentNotFoundException
+    taskService.removeComment(commentId); //Can throw CommentNotFoundException
     return Response.ok("Delete comment successfully!");
   }
 
@@ -824,7 +824,7 @@ public class TaskController extends AbstractController {
     Status status = statusService.getStatus(statusId);
     Project project = status.getProject();
     if (project.getStatus().size() > 1) {
-      statusService.deleteStatus(statusId);
+      statusService.removeStatus(statusId);
       //spaceGrpId, projectId, currentLabelId, labelIds, tags, statusId, dueDate, priority, assignee, completed, keyword, advanceSearch, groupby, orderBy, filter, viewType, securityContext
       return listTasks(space_group_id, project.getId(), null, null, null, null, null, null, null, null, null, null, null, null, null, "board", securityContext);
     } else {

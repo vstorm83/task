@@ -138,7 +138,7 @@ public class StatusServiceTest {
     when(statusHandler.getStatuses(project.getId())).thenReturn(Arrays.asList(s1, s2)).thenReturn(Arrays.asList(s1));
     when(taskHandler.findTasks(any(TaskQuery.class))).thenReturn(new ListAccessImpl<Task>(Task.class, Arrays.asList(t)));
 
-    statusService.deleteStatus(s2.getId());
+    statusService.removeStatus(s2.getId());
 
     verify(taskHandler, times(1)).update(taskCaptor.capture());
 

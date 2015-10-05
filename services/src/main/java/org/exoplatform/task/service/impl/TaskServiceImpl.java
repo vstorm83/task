@@ -104,7 +104,7 @@ public class TaskServiceImpl implements TaskService {
 
   @Override
   @ExoTransactional
-  public void deleteTask(long id) throws EntityNotFoundException {
+  public void removeTask(long id) throws EntityNotFoundException {
     Task task = getTask(id);// Can throw TaskNotFoundException
 
     daoHandler.getTaskHandler().delete(task);
@@ -168,7 +168,7 @@ public class TaskServiceImpl implements TaskService {
 
   @Override
   @ExoTransactional
-  public void deleteComment(long commentId) throws EntityNotFoundException {
+  public void removeComment(long commentId) throws EntityNotFoundException {
 
     Comment comment = daoHandler.getCommentHandler().find(commentId);
 
@@ -269,7 +269,7 @@ public class TaskServiceImpl implements TaskService {
   }
 
   @Override
-  public void deleteLabel(long labelId) {    
+  public void removeLabel(long labelId) {    
     daoHandler.getLabelHandler().delete(getLabelById(labelId));
   }
 
