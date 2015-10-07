@@ -6,7 +6,7 @@
 #{param name="filterDueDate"/}
 
 <%
-	import org.exoplatform.task.utils.TaskUtil;
+	import org.exoplatform.task.util.TaskUtil;
 	import org.exoplatform.task.domain.Priority;
 %>
 

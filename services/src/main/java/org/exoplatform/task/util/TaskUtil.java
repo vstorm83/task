@@ -349,7 +349,7 @@ public final class TaskUtil {
         String assignee = assignees.get(i);
         if (assignee == null) continue;
         q = query.clone();
-        q.setAssignee(assignee);
+        q.setAssignee(Arrays.asList(assignee));
         org.exoplatform.task.model.User user = userService.loadUser(assignee);
         key = new GroupKey(user.getDisplayName(), user, i);
         tasks = taskService.findTasks(q);
@@ -362,6 +362,23 @@ public final class TaskUtil {
         q = query.clone();
         q.setNullField(ASSIGNEE);
         key = new GroupKey("Unassigned", null, Integer.MAX_VALUE);
+        tasks = taskService.findTasks(q);
+        if (ListUtil.getSize(tasks) > 0) {
+          maps.put(key, tasks);
+        }
+      }
+    } else if (LABEL.equalsIgnoreCase(groupBy)) {
+      List<Label> labels = taskService.selectTaskField(selectFieldQuery, "labels");
+      GroupKey key;
+      ListAccess<Task> tasks;
+      TaskQuery q;
+
+      for (int i = 0; i < labels.size(); i++) {
+        Label label = labels.get(i);
+        if (label == null) continue;
+        q = query.clone();
+        q.setLabelIds(Arrays.asList(label.getId()));
+        key = new GroupKey(label.getName(), label, i);
         tasks = taskService.findTasks(q);
         if (ListUtil.getSize(tasks) > 0) {
           maps.put(key, tasks);
@@ -665,7 +682,7 @@ public final class TaskUtil {
     return false;
   }
 
-  public static Task saveTaskField(Task task, String param, String[] values, TimeZone timezone, TaskService taskService, StatusService statusService)
+  public static Task saveTaskField(Task task, String username, String param, String[] values, TimeZone timezone, TaskService taskService, StatusService statusService)
       throws EntityNotFoundException, ParameterEntityException {
 
     if (timezone == null) {
@@ -771,6 +788,47 @@ public final class TaskUtil {
         } catch (NumberFormatException ex) {
           throw new ParameterEntityException(task.getId(), Task.class, param, value, "ProjectID must be long", ex);
         }
+      } else if("labels".equalsIgnoreCase(param)) {
+        List<Long> ids = new ArrayList<Long>(values.length);
+        for (int i = 0; i < values.length; i++) {
+          try {
+            if (values[i] == null || values[i].isEmpty()) {
+              continue;
+            }
+            ids.add(Long.parseLong(values[i]));
+          } catch (NumberFormatException ex) {
+            throw new ParameterEntityException(-1L, Label.class, param, values[i], "LabelID must be long", ex);
+          }
+        }
+        
+        taskService.updateTask(task);        
+        for (Long labelId : ids) {
+          Label label = taskService.getLabelById(labelId);
+          if (label == null) {
+            throw new EntityNotFoundException(labelId, Label.class);
+          }
+          label.getTasks().add(task);
+          try {            
+            taskService.updateLabel(label, Arrays.asList(Label.FIELDS.TASK));            
+          } catch (Exception ex) {
+            ex.printStackTrace();
+          }
+        }
+
+        List<Label> remove = new ArrayList<Label>();
+        for(Label label : taskService.findLabelsByTask(task.getId(), username)) {
+          if (label.getUsername().equals(username) && !ids.contains(label.getId())) {
+            remove.add(label);
+          }
+        }
+        for (Label l : remove) {
+          l.getTasks().remove(task);
+          try {
+            taskService.updateLabel(l, Arrays.asList(Label.FIELDS.TASK));            
+          } catch (Exception ex) {
+            ex.printStackTrace();
+          }
+        }        
       } else if ("calendarIntegrated".equalsIgnoreCase(param)) {
         task.setCalendarIntegrated(Boolean.parseBoolean(value));
       } else {

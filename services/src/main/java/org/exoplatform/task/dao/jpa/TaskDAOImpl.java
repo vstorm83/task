@@ -19,9 +19,9 @@ package org.exoplatform.task.dao.jpa;
 import static org.exoplatform.task.dao.condition.Conditions.TASK_COWORKER;
 import static org.exoplatform.task.dao.condition.Conditions.TASK_MANAGER;
 import static org.exoplatform.task.dao.condition.Conditions.TASK_PARTICIPATOR;
+import static org.exoplatform.task.dao.condition.Conditions.TASK_TAG;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -645,6 +645,8 @@ public class TaskDAOImpl extends CommonJPADAO<Task, Long> implements TaskHandler
       path = join.join("manager", JoinType.LEFT);
     } else if (TASK_PARTICIPATOR.equals(condition.getField())) {
       path = join.join("participator", JoinType.LEFT);
+    } else if (TASK_TAG.equals(condition.getField())) {
+      path = task.join("tag", JoinType.INNER);
     }
 
     if (SingleCondition.EQ.equals(condition.getType())) {

@@ -19,6 +19,11 @@
 
 package org.exoplatform.task.domain;
 
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
@@ -41,11 +46,6 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 import org.exoplatform.commons.api.persistence.ExoEntity;
 import org.exoplatform.task.service.TaskBuilder;

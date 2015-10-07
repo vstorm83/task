@@ -209,25 +209,7 @@ public class TaskServiceImpl implements TaskService {
 
   @Override
   public List<Label> findLabelsByTask(long taskId, String username) throws EntityNotFoundException {
-    if (username == null) {
-      throw new NullPointerException("username can't be null");
-    }
-    //
-    Task task = getTask(taskId);
-    if (task == null) {
-      throw new EntityNotFoundException(taskId, Task.class);
-    }
-    
-    List<Label> labels = new LinkedList<Label>();
-    Set<Label> tmp = task.getLabels();
-    if (tmp != null) {
-      for (Label lbl : tmp) {
-        if (username.equals(lbl.getUsername())) {
-          labels.add(lbl);
-        }
-      }
-    }
-    return labels;
+    return daoHandler.getLabelHandler().findLabelsByTask(taskId, username);
   }
 
   @Override
@@ -264,7 +246,7 @@ public class TaskServiceImpl implements TaskService {
         break;
       case HIDDEN:
         lb.setHidden(label.isHidden());
-      }      
+      }
     }
     return daoHandler.getLabelHandler().update(lb);
   }
