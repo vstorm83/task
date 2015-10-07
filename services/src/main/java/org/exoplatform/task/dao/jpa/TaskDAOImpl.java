@@ -67,6 +67,19 @@ public class TaskDAOImpl extends CommonJPADAO<Task, Long> implements TaskHandler
   }
 
   @Override
+  public void delete(Task entity) {
+    EntityManager em = getEntityManager();
+    Task task = em.find(Task.class, entity.getId());
+
+    // Delete all task log relate to this task
+    Query query = em.createNamedQuery("TaskChangeLog.removeChangeLogByTaskId");
+    query.setParameter("taskId", entity.getId());
+    query.executeUpdate();
+
+    em.remove(task);
+  }
+
+  @Override
   public List<Task> findByUser(String user) {
 
     List<String> memberships = new ArrayList<String>();
@@ -542,26 +555,6 @@ public class TaskDAOImpl extends CommonJPADAO<Task, Long> implements TaskHandler
     } catch (PersistenceException e) {
       return Collections.emptyList();
     }
-  }  
-   
-  public TaskLog addTaskLog(long taskId, TaskLog taskLog) throws EntityNotFoundException {
-    Task task = getEntityManager().find(Task.class, taskId);
-    task.getTaskLogs().add(taskLog);
-    this.update(task);
-    return taskLog;
-  }
-
-  @Override
-  public ListAccess<TaskLog> getTaskLogs(long taskId) {
-    Task task = getEntityManager().find(Task.class, taskId);
-    if (task.getTaskLogs() == null) {
-      return new ListAccessImpl<TaskLog>(TaskLog.class, Collections.<TaskLog>emptyList());
-    }
-    List<TaskLog> taskLogs = new ArrayList<TaskLog>(task.getTaskLogs().size());
-    for (TaskLog log : task.getTaskLogs()) {
-      taskLogs.add(log.clone());
-    }
-    return new ListAccessImpl<TaskLog>(TaskLog.class, taskLogs);
   }
 
   private ListAccess<Task> findTasks(Condition condition, List<OrderBy> orderBies) {

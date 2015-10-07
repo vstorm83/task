@@ -665,7 +665,7 @@ public final class TaskUtil {
     return false;
   }
 
-  public static Task saveTaskField(Task task, String param, String[] values, TimeZone timezone, StatusService statusService)
+  public static Task saveTaskField(Task task, String param, String[] values, TimeZone timezone, TaskService taskService, StatusService statusService)
       throws EntityNotFoundException, ParameterEntityException {
 
     if (timezone == null) {
@@ -674,14 +674,6 @@ public final class TaskUtil {
 
     //
     if ("workPlan".equalsIgnoreCase(param)) {
-      long oldStartTime = -1;
-      if (task.getStartDate() != null) {
-        oldStartTime = task.getStartDate().getTime();
-      }
-      long oldEndTime = -1;
-      if (task.getEndDate() != null) {
-        oldEndTime = task.getEndDate().getTime();
-      }
       //
       if (values == null) {
         task.setStartDate(null);
@@ -756,14 +748,11 @@ public final class TaskUtil {
         }
         task.setCoworker(coworker);
       } else if("tags".equalsIgnoreCase(param)) {
-        Set<String> old = task.getTag();
         Set<String> tags = new HashSet<String>();
         for(String t : values) {
           tags.add(t);
         }
         task.setTag(tags);
-
-        Set<String> newTags = new HashSet<String>(task.getTag());
       } else if ("priority".equalsIgnoreCase(param)) {
         Priority priority = Priority.valueOf(value);
         task.setPriority(priority);
@@ -790,24 +779,7 @@ public final class TaskUtil {
       }
     }
 
-    //.
-    if ("status".equalsIgnoreCase(param) && values.length > 2) {
-      //TODO: need save order of task (update rank)
-      long[] taskIds = new long[values.length - 1];
-      int currentTaskIndex = -1;
-      for (int i = 1; i < values.length; i++) {
-        taskIds[i - 1] = Long.parseLong(values[i]);
-        if (taskIds[i - 1] == task.getId()) {
-          currentTaskIndex = i - 1;
-        }
-      }
-      if (currentTaskIndex > -1) {
-        //. Update here
-
-      }
-    }
-
-    return task;
+    return taskService.updateTask(task);
   }
 }
 

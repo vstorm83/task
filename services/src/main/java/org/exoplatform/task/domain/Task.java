@@ -45,7 +45,6 @@ import javax.persistence.TemporalType;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.exoplatform.commons.api.persistence.ExoEntity;
@@ -140,12 +139,12 @@ public class Task {
   @Column(name = "DUE_DATE")
   private Date        dueDate;
 
-  @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
+  //TODO: Please review these one-to-many mapping, use one-direction mapping is better than bi-direction?
+
+  @OneToMany(mappedBy = "task", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
   private Set<Comment> comments = new HashSet<Comment>();
-  
-  @ElementCollection(fetch=FetchType.LAZY)
-  @CollectionTable(name = "TASK_LOGS",
-      joinColumns = @JoinColumn(name = "TASK_ID"))
+
+  @OneToMany(mappedBy = "task", fetch = FetchType.LAZY)
   private Set<TaskLog> taskLogs = new HashSet<TaskLog>();
   
   @ManyToMany(fetch = FetchType.LAZY, mappedBy="tasks")

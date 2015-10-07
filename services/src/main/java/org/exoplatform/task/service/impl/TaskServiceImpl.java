@@ -155,15 +155,16 @@ public class TaskServiceImpl implements TaskService {
   @Override
   public TaskLog addTaskLog(long id, String username, String msg, String target) throws EntityNotFoundException {
     TaskLog log = new TaskLog();
+    log.setTask(getTask(id));
     log.setAuthor(username);
     log.setMsg(msg);
     log.setTarget(target);
-    return daoHandler.getTaskHandler().addTaskLog(id, log);
+    return daoHandler.getTaskLogHandler().create(log);
   }
 
   @Override
   public ListAccess<TaskLog> getTaskLogs(long taskId) {
-    return daoHandler.getTaskHandler().getTaskLogs(taskId);
+    return daoHandler.getTaskLogHandler().findTaskLogs(taskId);
   }
 
   @Override

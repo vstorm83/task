@@ -70,6 +70,7 @@ public class TestTaskDAO extends AbstractTest {
       t.setStatus(null);
     }    
     tDAO.updateAll(tDAO.findAll());
+    daoHandler.getTaskLogHandler().deleteAll();
     tDAO.deleteAll();
   }
 
@@ -353,18 +354,21 @@ public class TestTaskDAO extends AbstractTest {
     Task task = newTaskInstance("Task 1", "", null);
     tDAO.create(task);
 
-    ListAccess<TaskLog> logs = tDAO.getTaskLogs(task.getId());
+    TaskLogHandler logHandler = daoHandler.getTaskLogHandler();
+
+    ListAccess<TaskLog> logs = logHandler.findTaskLogs(task.getId());
 
     Assert.assertEquals(0, ListUtil.getSize(logs));
     
     TaskLog log = new TaskLog();
+    log.setTask(task);
     log.setAuthor("root");
     log.setMsg("has created task");
 
-    tDAO.addTaskLog(task.getId(), log);
+    logHandler.create(log);
     
     //
-    logs = tDAO.getTaskLogs(task.getId());
+    logs = logHandler.findTaskLogs(task.getId());
     Assert.assertEquals(1,  ListUtil.getSize(logs));
   }
 

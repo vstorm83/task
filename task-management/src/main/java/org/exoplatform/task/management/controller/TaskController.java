@@ -158,9 +158,9 @@ public class TaskController extends AbstractController {
   @Ajax
   @MimeType.HTML
   public Response renderTaskLogs(Long taskId, SecurityContext securityContext) throws EntityNotFoundException {
-    Task task = taskService.getTask(taskId); //Can throw TaskNotFoundException
-    
-    List<TaskLog> logs = new LinkedList<TaskLog>(task.getTaskLogs());
+    TaskLog[] arr = ListUtil.load(taskService.getTaskLogs(taskId), 0, -1);
+
+    List<TaskLog> logs = new LinkedList<TaskLog>(Arrays.asList(arr));
     Collections.sort(logs);
     Map<String, User> userMap = new HashMap<String, User>();
     if (logs.size() > 0) {
@@ -223,7 +223,7 @@ public class TaskController extends AbstractController {
 
     TimeZone timezone = userService.getUserTimezone(context.getRemoteUser());
     Task task = taskService.getTask(taskId);
-    task = TaskUtil.saveTaskField(task, name, value, timezone, statusService);
+    task = TaskUtil.saveTaskField(task, name, value, timezone, taskService, statusService);
 
     String response = "Update successfully";
     if ("workPlan".equalsIgnoreCase(name)) {        
