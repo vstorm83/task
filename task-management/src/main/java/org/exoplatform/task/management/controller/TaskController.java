@@ -830,7 +830,7 @@ public class TaskController extends AbstractController {
                                    String assignee,
                                    Boolean completed, TimeZone timezone) {
     TaskQuery query = new TaskQuery();
-    if (keyword != null) {
+    if (keyword != null && !keyword.trim().isEmpty()) {
       query.setKeyword(keyword);      
     }
     if (labelIds != null) {
@@ -840,7 +840,7 @@ public class TaskController extends AbstractController {
           tmp.add(Long.parseLong(id));          
         }
       }
-      query.setLabelIds(tmp);      
+      query.setLabelIds(tmp);
     }
     if (tags != null) {
       List<String> tmp = new LinkedList<String>();

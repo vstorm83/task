@@ -247,7 +247,11 @@ public class TaskQuery implements Cloneable {
 
   public void setTags(List<String> tags) {
     if (tags != null) {
-      this.add(in(TASK_TAG, tags));
+      List<Condition> cond = new LinkedList<Condition>();
+      for (String tag : tags) {
+        cond.add(eq(TASK_TAG, tag));
+      }
+      this.add(Conditions.and(cond.toArray(new Condition[cond.size()])));
     }
   }
 

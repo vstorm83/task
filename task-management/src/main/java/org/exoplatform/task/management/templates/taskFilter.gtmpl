@@ -77,12 +77,9 @@
 		  		<div class="controls">
 		  			<select name="priority">
 		  				<option value="">All</option>
-		  				<%for (def priority : Priority.values()) {
-		  					if (!priority.equals(Priority.NONE)) {
-		  				%>										  					  				
+		  				<%for (def priority : Priority.values()) {%>										  					  				
 		  				<option value="<%=priority.name()%>"><%=priority.name()%></option>
-		  				<% }
-		  				} %>
+		  				<%} %>
 		  			</select>
 		  		</div>
 		  	</div>

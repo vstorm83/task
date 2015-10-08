@@ -176,7 +176,7 @@ public class TestTaskDAO extends AbstractTest {
     tDAO.update(task);
     //
     query = new TaskQuery();
-    query.setTags(Arrays.asList("testTag", "non-exists-tag"));
+    query.setTags(Arrays.asList("testTag"));
     tasks = tDAO.findTasks(query);
     Assert.assertEquals(1, tasks.getSize());
     
