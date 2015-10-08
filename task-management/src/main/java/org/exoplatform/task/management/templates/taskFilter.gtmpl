@@ -78,7 +78,7 @@
 		  			<select name="priority">
 		  				<option value="">All</option>
 		  				<%for (def priority : Priority.values()) {
-		  					if (!priority.equals(Priority.UNDEFINED)) {
+		  					if (!priority.equals(Priority.NONE)) {
 		  				%>										  					  				
 		  				<option value="<%=priority.name()%>"><%=priority.name()%></option>
 		  				<% }

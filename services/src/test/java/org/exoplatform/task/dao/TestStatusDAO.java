@@ -92,18 +92,10 @@ public class TestStatusDAO extends AbstractTest {
     return project;
   }
 
-  private Status createStatus(String name, Task ...tasks) {
+  private Status createStatus(String name) {
     Status st = new Status();
     st.setName(name);
     st.setRank(1);
-    if (tasks != null) {
-      Set<Task> set = new HashSet<Task>();
-      for (Task t : tasks) {
-        t.setStatus(st);
-        set.add(t);
-      }
-      st.setTasks(set);      
-    }
     return st;
   }
 }

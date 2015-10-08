@@ -76,6 +76,11 @@ public class TaskDAOImpl extends CommonJPADAO<Task, Long> implements TaskHandler
     query.setParameter("taskId", entity.getId());
     query.executeUpdate();
 
+    // Delete all comments of task
+    query = em.createNamedQuery("Comment.deleteCommentOfTask");
+    query.setParameter("taskId", entity.getId());
+    query.executeUpdate();
+
     em.remove(task);
   }
 

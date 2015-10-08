@@ -146,6 +146,8 @@ public class TestPermission extends AbstractTest {
     status.setProject(project);
     project.getStatus().add(status);
 
+    pDAO.create(project);
+
     //Task
     Task task1 = parser.parse("Task of User 1", context);
     task1.setCreatedBy(user1);
@@ -156,11 +158,9 @@ public class TestPermission extends AbstractTest {
     task2.setCreatedBy(user1);
     task2.setAssignee(user1);
     task2.setStatus(status);
-    status.getTasks().add(task2);
 
-    //Creation
-    pDAO.create(project);
     tDAO.create(task1);
+    tDAO.create(task2);
 
     //Test
     Assert.assertEquals(2, tDAO.findByUser(user1).size());
@@ -192,6 +192,9 @@ public class TestPermission extends AbstractTest {
     status.setProject(project);
     project.getStatus().add(status);
 
+    //
+    pDAO.create(project);
+
     //Task
     Task task1 = parser.parse("Task of User 1", context);
     task1.setCreatedBy(user1);
@@ -202,11 +205,9 @@ public class TestPermission extends AbstractTest {
     task2.setCreatedBy(user1);
     task2.setAssignee(user1);
     task2.setStatus(status);
-    status.getTasks().add(task2);
 
-    //Creation
-    pDAO.create(project);
     tDAO.create(task1);
+    tDAO.create(task2);
 
     //Test
     Assert.assertEquals(2, tDAO.findByUser(user1).size());

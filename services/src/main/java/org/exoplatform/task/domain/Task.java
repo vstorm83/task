@@ -138,14 +138,6 @@ public class Task {
   @Temporal(TemporalType.TIMESTAMP)
   @Column(name = "DUE_DATE")
   private Date        dueDate;
-
-  //TODO: Please review these one-to-many mapping, use one-direction mapping is better than bi-direction?
-
-  @OneToMany(mappedBy = "task", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-  private Set<Comment> comments = new HashSet<Comment>();
-
-  @OneToMany(mappedBy = "task", fetch = FetchType.LAZY)
-  private Set<TaskLog> taskLogs = new HashSet<TaskLog>();
   
   @ManyToMany(fetch = FetchType.LAZY, mappedBy="tasks")
   private Set<Label> labels = new HashSet<Label>();
@@ -308,28 +300,6 @@ public class Task {
     this.coworker = coworker;
   }
 
-  //TODO: get comments of task via TaskService
-  @Deprecated
-  public Set<Comment> getComments() {
-    return comments;
-  }
-
-  @Deprecated
-  public void setComments(Set<Comment> comments) {
-    this.comments = comments;
-  }
-
-  //TODO: get TaskLogs via TaskService
-  @Deprecated
-  public Set<TaskLog> getTaskLogs() {
-    return taskLogs;
-  }
-
-  @Deprecated
-  public void setTaskLogs(Set<TaskLog> taskLogs) {
-    this.taskLogs = taskLogs;
-  }
-
   public String getActivityId() {
     return activityId;
   }
@@ -380,7 +350,6 @@ public class Task {
     if (completed != task.completed) return false;
     if (id != task.id) return false;
     if (assignee != null ? !assignee.equals(task.assignee) : task.assignee != null) return false;
-    if (comments != null ? !comments.equals(task.comments) : task.comments != null) return false;
     if (context != null ? !context.equals(task.context) : task.context != null) return false;
     if (coworker != null ? !coworker.equals(task.coworker) : task.coworker != null) return false;
     if (createdBy != null ? !createdBy.equals(task.createdBy) : task.createdBy != null) return false;
