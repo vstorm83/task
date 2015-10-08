@@ -108,7 +108,7 @@
       <column name="DESCRIPTION" type="NVARCHAR(2000)">
         <constraints nullable="true"/>
       </column>
-      <column name="PRIORITY" type="NVARCHAR(10)">
+      <column name="PRIORITY" type="INTEGER" defaultValue="0">
         <constraints nullable="true"/>
       </column>
       <column name="CONTEXT" type="NVARCHAR(255)">

@@ -591,7 +591,7 @@ public final class TaskUtil {
         case HIGH :
           event.setPriority(Event.PRIORITY_HIGH);
           break;
-        case MEDIUM:
+        case NORMAL:
           event.setPriority(Event.PRIORITY_NORMAL);
           break;
         case LOW:
@@ -720,7 +720,7 @@ public final class TaskUtil {
       } else if("status".equalsIgnoreCase(param)) {
         //
         try {
-          Long statusId = Long.parseLong(value);
+          Long statusId = Long.parseLong(value.toUpperCase());
           Status status = statusService.getStatus(statusId);
           if(status == null) {
             LOG.info("Status does not exist with ID: " + value);

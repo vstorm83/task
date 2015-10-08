@@ -92,7 +92,7 @@ public class Task {
 
   private String      description;
 
-  @Enumerated(EnumType.STRING)
+  @Enumerated(EnumType.ORDINAL)
   private Priority    priority;
 
   private String      context;
@@ -154,6 +154,7 @@ public class Task {
   private String activityId;
 
   public Task() {
+    this.priority = Priority.NORMAL;
   }
 
   public long getId() {
