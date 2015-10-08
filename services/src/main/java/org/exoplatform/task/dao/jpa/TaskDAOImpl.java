@@ -668,6 +668,8 @@ public class TaskDAOImpl extends CommonJPADAO<Task, Long> implements TaskHandler
       return path.isNull();
     } else if (SingleCondition.NOT_NULL.equals(type)) {
       return path.isNotNull();
+    } else if (SingleCondition.IS_EMPTY.equals(type)) {
+        return cb.isEmpty(path);
     } else if (SingleCondition.LIKE.equals(type)) {
       return cb.like(path, String.valueOf(value));
     } else if (SingleCondition.IN.equals(type)) {

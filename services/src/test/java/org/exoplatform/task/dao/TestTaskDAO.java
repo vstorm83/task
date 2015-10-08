@@ -161,14 +161,20 @@ public class TestTaskDAO extends AbstractTest {
     Task task = newTaskInstance("testTask", "task with label", username);
     tDAO.create(task);
 
+    //Find tasks with no label
+    TaskQuery query = new TaskQuery();
+    query.setEmptyField("labels");
+    ListAccess<Task> tasks = tDAO.findTasks(query);
+    Assert.assertEquals(1, tasks.getSize());
+
     //Find by label
     Label label = new Label("testLabel", username);
     label.setTasks(new HashSet<Task>(Arrays.asList(task)));
     labelHandler.create(label);
     //
-    TaskQuery query = new TaskQuery();
+    query = new TaskQuery();
     query.setLabelIds(Arrays.asList(label.getId()));
-    ListAccess<Task> tasks = tDAO.findTasks(query);
+    tasks = tDAO.findTasks(query);
     Assert.assertEquals(1, tasks.getSize());
 
     //Find by tag

@@ -17,24 +17,6 @@
 package org.exoplatform.task.util;
 
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.ResourceBundle;
-import java.util.Set;
-import java.util.TimeZone;
-import java.util.TreeMap;
-
 import org.exoplatform.calendar.model.Event;
 import org.exoplatform.calendar.service.impl.NewUserListener;
 import org.exoplatform.commons.utils.ListAccess;
@@ -60,6 +42,24 @@ import org.exoplatform.task.service.StatusService;
 import org.exoplatform.task.service.TaskService;
 import org.exoplatform.task.service.UserService;
 import org.exoplatform.web.controller.router.Router;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.ResourceBundle;
+import java.util.Set;
+import java.util.TimeZone;
+import java.util.TreeMap;
 
 /**
  * Created by The eXo Platform SAS
@@ -383,6 +383,14 @@ public final class TaskUtil {
         if (ListUtil.getSize(tasks) > 0) {
           maps.put(key, tasks);
         }
+      }
+
+      q = query.clone();
+      q.setEmptyField("labels");
+      key = new GroupKey("No Label", null, Integer.MAX_VALUE);
+      tasks = taskService.findTasks(q);
+      if (ListUtil.getSize(tasks) > 0) {
+        maps.put(key, tasks);
       }
     }
     return maps;

@@ -69,6 +69,9 @@ public class Conditions {
   public static <T> SingleCondition<T> isNull(String fieldName) {
     return new SingleCondition<T>(SingleCondition.IS_NULL, fieldName, null);
   }
+  public static <T> SingleCondition<T> isEmpty(String fieldName) {
+    return new SingleCondition<T>(SingleCondition.IS_EMPTY, fieldName, null);
+  }
   public static <T> SingleCondition<T> notNull(String fieldName) {
     return new SingleCondition<T>(SingleCondition.NOT_NULL, fieldName, null);
   }
