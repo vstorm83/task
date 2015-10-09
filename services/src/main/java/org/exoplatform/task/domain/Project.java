@@ -36,24 +36,7 @@ import java.util.*;
     @NamedQuery(name = "Project.getRootProjects",
         query = "SELECT p FROM Project p WHERE p.parent.id = 0 OR p.parent is null"),
     @NamedQuery(name = "Project.findSubProjects",
-        query = "SELECT p FROM Project p WHERE p.parent.id = :projectId"),
-    @NamedQuery(name = "Project.findAllByMembership",
-        query = "SELECT p FROM Project p " +
-            "  LEFT JOIN p.manager managers " +
-            "  LEFT JOIN p.participator participators " +
-            "WHERE managers in (:memberships) OR participators in (:memberships)"),
-    @NamedQuery(name = "Project.findRootProjectsByMemberships",
-        query = "SELECT p FROM Project p " +
-            "  LEFT JOIN p.manager managers " +
-            "  LEFT JOIN p.participator participators " +
-            "WHERE (managers in (:memberships) OR participators in (:memberships)) " +
-            "AND (p.parent.id = 0 OR p.parent is null)"),
-    @NamedQuery(name = "Project.findSubProjectsByMemberships",
-        query = "SELECT p FROM Project p " +
-            "  LEFT JOIN p.manager managers " +
-            "  LEFT JOIN p.participator participators " +
-            "WHERE (managers in (:memberships) OR participators in (:memberships)) " +
-            "AND p.parent.id = :projectId")
+        query = "SELECT p FROM Project p WHERE p.parent.id = :projectId")
 })
 public class Project {
 

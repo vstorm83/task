@@ -23,8 +23,8 @@ package org.exoplatform.task.dao.condition;
  * @author <a href="mailto:tuyennt@exoplatform.com">Tuyen Nguyen The</a>.
  */
 public class Condition implements Cloneable {
-  @Override
-  protected Condition clone() {
+
+  public Condition clone() {
     try {
       return (Condition)super.clone();
     } catch (CloneNotSupportedException e) {

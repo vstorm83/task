@@ -44,9 +44,13 @@ public class Conditions {
   public static String TASK_START_DATE = "startDate";
   public static String TASK_END_DATE = "endDate";
   public static String TASK_CALENDAR_INTEGRATED = "calendarIntegrated";
-
   public static String TASK_MANAGER = "status.project.manager";
   public static String TASK_PARTICIPATOR = "status.project.participator";
+
+  public static final String MANAGER = "manager";
+  public static final String PARTICIPATOR = "participator";
+  public static final String NAME = "name";
+  public static final String PARENT = "parent";
 
   public static <T> SingleCondition<T> eq(String fieldName, T value) {
     return new SingleCondition<T>(SingleCondition.EQ, fieldName, value);

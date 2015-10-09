@@ -3,7 +3,9 @@ package org.exoplatform.task.service;
 import java.util.List;
 import java.util.Set;
 
+import org.exoplatform.commons.utils.ListAccess;
 import org.exoplatform.task.dao.OrderBy;
+import org.exoplatform.task.dao.ProjectQuery;
 import org.exoplatform.task.domain.Project;
 import org.exoplatform.task.domain.Task;
 import org.exoplatform.task.exception.EntityNotFoundException;
@@ -47,7 +49,9 @@ public interface ProjectService {
 
   Project cloneProject(long projectId, boolean cloneTask) throws EntityNotFoundException;
 
-  List<Project> getSubProjects(long parentId);
+  ListAccess<Project> getSubProjects(long parentId);
 
-  List<Project> findProjects(List<String> memberships, String keyword, OrderBy order);
+  ListAccess<Project> findProjects(ProjectQuery query);
+
+  ListAccess<Project> findProjects(List<String> memberships, String keyword, OrderBy order);
 }
