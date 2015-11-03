@@ -19,6 +19,7 @@ package org.exoplatform.task.service.impl;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -31,6 +32,8 @@ import org.exoplatform.task.dao.DAOHandler;
 import org.exoplatform.task.dao.OrderBy;
 import org.exoplatform.task.dao.ProjectQuery;
 import org.exoplatform.task.dao.TaskQuery;
+import org.exoplatform.task.domain.Manager;
+import org.exoplatform.task.domain.Participator;
 import org.exoplatform.task.domain.Project;
 import org.exoplatform.task.domain.Status;
 import org.exoplatform.task.domain.Task;
@@ -83,9 +86,9 @@ public class ProjectServiceImpl implements ProjectService {
     if (parentProject != null) {
       project.setParent(parentProject);
       //If parent, list of members/participators of parents override the list of members/participators in parameter
-      project.setParticipator(new HashSet<String>(parentProject.getParticipator()));
+      project.setParticipator(new HashSet<String>(getParticipator(parentId)));
       //If parent, list of manager of parents override the list of managers in parameter
-      project.setManager(new HashSet<String>(parentProject.getManager()));
+      project.setManager(new HashSet<String>(getManager(parentId)));
 
       //persist project
       project = createProject(project);
@@ -193,6 +196,16 @@ public class ProjectServiceImpl implements ProjectService {
   @Override
   public ListAccess<Project> findProjects(List<String> memberships, String keyword, OrderBy order) {
     return daoHandler.getProjectHandler().findAllByMembershipsAndKeyword(memberships, keyword, order);
+  }
+
+  @Override
+  public Set<String> getManager(long projectId) {
+    return daoHandler.getProjectHandler().getManager(projectId);
+  }
+
+  @Override
+  public Set<String> getParticipator(long projectId) {
+    return null;
   }
 }
 

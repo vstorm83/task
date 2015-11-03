@@ -49,28 +49,25 @@ public class TestProjectDAO extends AbstractTest {
 
   @After
   public void tearDown() {
-    pDAO.deleteAll();
+//    pDAO.deleteAll();
   }
 
   @Test
   public void testProjectCreation() {
     List<Project> all;
+    
+    Set<String> manager = new HashSet<String>();
+    manager.add("root");
 
-    Project p1 = new Project("Test project 1", null, null, null, null);
+    Project p1 = new Project("Test project 1", null, null, manager, null);
     pDAO.create(p1);
+    endRequestLifecycle();
+    initializeContainerAndStartRequestLifecycle();
     all = pDAO.findAll();
     Assert.assertEquals(1, all.size());
     Assert.assertEquals("Test project 1", p1.getName());
-
-    all = pDAO.findAll();
-    Assert.assertEquals(1, all.size());
-    Assert.assertEquals("Test project 1", p1.getName());
-    Project p2 = new Project("Test project 2", null, null, null, null);
-    pDAO.create(p2);
-
-    all = pDAO.findAll();
-    Assert.assertEquals(2, all.size());
-    Assert.assertEquals(p1.getId() + 1, p2.getId());
+    
+    System.out.println(pDAO.getManager(p1.getId()));
   }
 
   @Test

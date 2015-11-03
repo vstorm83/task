@@ -1,6 +1,7 @@
 package org.exoplatform.task.dao;
 
 import java.util.List;
+import java.util.Set;
 
 import org.exoplatform.commons.api.persistence.GenericDAO;
 import org.exoplatform.commons.utils.ListAccess;
@@ -11,7 +12,9 @@ import org.exoplatform.task.domain.Project;
  * @version $Revision$
  */
 public interface ProjectHandler extends GenericDAO<Project, Long> {
-
+  
+  public Set<String> getManager(long projectId);
+  
   Project removeProject(long projectId, boolean deleteChild);
 
   ListAccess<Project> findSubProjects(Project project);

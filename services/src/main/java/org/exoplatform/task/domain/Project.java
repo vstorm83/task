@@ -19,12 +19,29 @@
 
 package org.exoplatform.task.domain;
 
-import org.exoplatform.commons.api.persistence.ExoEntity;
-import org.exoplatform.services.security.Identity;
-import org.exoplatform.services.security.MembershipEntry;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
-import javax.persistence.*;
-import java.util.*;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+
+import org.exoplatform.commons.api.persistence.ExoEntity;
 
 /**
  * @author <a href="mailto:tuyennt@exoplatform.com">Tuyen Nguyen The</a>
@@ -55,15 +72,11 @@ public class Project {
   @OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE, orphanRemoval = true)
   private Set<Status> status = new HashSet<Status>();
 
-  @ElementCollection
-  @CollectionTable(name = "TASK_PROJECT_MANAGERS",
-      joinColumns = @JoinColumn(name = "PROJECT_ID"))
-  private Set<String> manager = new HashSet<String>();
+  @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade=CascadeType.ALL, orphanRemoval = true)
+  private Set<Manager> manager = new HashSet<Manager>();
 
-  @ElementCollection
-  @CollectionTable(name = "TASK_PROJECT_PARTICIPATORS",
-      joinColumns = @JoinColumn(name = "PROJECT_ID"))
-  private Set<String> participator = new HashSet<String>();
+  @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade=CascadeType.ALL, orphanRemoval = true)
+  private Set<Participator> participator = new HashSet<Participator>();
 
   @Temporal(TemporalType.DATE)
   @Column(name = "DUE_DATE")
@@ -83,12 +96,10 @@ public class Project {
   public Project() {
   }
 
-  public Project(String name, String description, Set<Status> status, Set<String> manager, Set<String> participator) {
+  public Project(String name, String description, Set<Status> status) {
     this.name = name;
     this.description = description;
     this.status = status;
-    this.manager = manager;
-    this.participator = participator;
   }
 
   public long getId() {
@@ -118,19 +129,11 @@ public class Project {
     this.status = status;
   }
 
-  public Set<String> getParticipator() {
-    return participator;
-  }
-
-  public void setParticipator(Set<String> participator) {
+  public void setParticipator(Set<Participator> participator) {
     this.participator = participator;
   }
 
-  public Set<String> getManager() {
-    return manager;
-  }
-
-  public void setManager(Set<String> manager) {
+  public void setManager(Set<Manager> manager) {
     this.manager = manager;
   }
 
@@ -185,18 +188,7 @@ public class Project {
   }
 
   public Project clone(boolean cloneTask) {
-    Set<String> manager = new HashSet<String>();
-    Set<String> participator = new HashSet<String>();
-
-    if (getManager() != null) {
-      manager.addAll(getManager());
-    }
-    if (getParticipator() != null) {
-      participator.addAll(getParticipator());
-    }
-
-    Project project = new Project(this.getName(), this.getDescription(), new HashSet<Status>(),
-        manager, participator);
+    Project project = new Project(this.getName(), this.getDescription(), new HashSet<Status>());
 
     project.setId(getId());
     project.setColor(this.getColor());
@@ -211,39 +203,6 @@ public class Project {
     project.children = new LinkedList<Project>();
 
     return project;
-  }
-
-  public boolean canView(Identity user) {
-    Set<String> permissions = new HashSet<String>(getParticipator());
-    permissions.addAll(getManager());
-
-    return hasPermission(user, permissions);
-  }
-
-  public boolean canEdit(Identity user) {
-    return hasPermission(user, getManager());
-  }
-
-  private boolean hasPermission(Identity user, Set<String> permissions) {
-    if (permissions.contains(user.getUserId())) {
-      return true;
-    } else {
-      Set<MembershipEntry> memberships = new HashSet<MembershipEntry>();
-      for (String per : permissions) {
-        MembershipEntry entry = MembershipEntry.parse(per);
-        if (entry != null) {
-          memberships.add(entry);
-        }
-      }
-
-      for (MembershipEntry entry :  user.getMemberships()) {
-        if (memberships.contains(entry)) {
-          return true;
-        }
-      }
-    }
-
-    return false;
   }
 
   @Override

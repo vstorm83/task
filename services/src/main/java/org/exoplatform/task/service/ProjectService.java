@@ -1,10 +1,13 @@
 package org.exoplatform.task.service;
 
 import java.util.List;
+import java.util.Set;
 
 import org.exoplatform.commons.utils.ListAccess;
 import org.exoplatform.task.dao.OrderBy;
 import org.exoplatform.task.dao.ProjectQuery;
+import org.exoplatform.task.domain.Manager;
+import org.exoplatform.task.domain.Participator;
 import org.exoplatform.task.domain.Project;
 import org.exoplatform.task.exception.EntityNotFoundException;
 
@@ -21,6 +24,10 @@ public interface ProjectService {
    * @throws EntityNotFoundException
    */
   Project getProject(Long projectId) throws EntityNotFoundException;
+  
+  Set<String> getManager(long projectId);
+  
+  Set<String> getParticipator(long projectId);
 
   /**
    * Create a project with given <code>project</code> model object.

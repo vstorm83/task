@@ -31,7 +31,6 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
 
-import org.exoplatform.calendar.model.Calendar;
 import org.exoplatform.commons.utils.HTMLEntityEncoder;
 import org.exoplatform.commons.utils.ListAccess;
 import org.exoplatform.container.ExoContainer;
@@ -41,14 +40,12 @@ import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.log.Log;
 import org.exoplatform.services.security.ConversationState;
 import org.exoplatform.services.security.Identity;
-import org.exoplatform.task.dao.TaskQuery;
+import org.exoplatform.services.security.MembershipEntry;
 import org.exoplatform.task.domain.Project;
 import org.exoplatform.task.domain.Status;
-import org.exoplatform.task.domain.Task;
 import org.exoplatform.task.exception.EntityNotFoundException;
 import org.exoplatform.task.exception.ParameterEntityException;
 import org.exoplatform.task.service.ProjectService;
-import org.exoplatform.task.service.TaskService;
 import org.exoplatform.web.controller.router.Router;
 import org.gatein.common.text.EntityEncoder;
 
@@ -71,6 +68,43 @@ public final class ProjectUtil {
   public static final String DUE_DATE = "dueDate";
 
   private ProjectUtil() {
+  }
+  
+  public boolean canView(Project project, Identity user) {
+    if (project == null) return false;
+    
+    ProjectService service = getProjectService();
+    Set<String> permissions = new HashSet<String>(service.getParticipator(project.getId()));
+    permissions.addAll(service.getManager(project.getId()));
+
+    return hasPermission(user, permissions);
+  }
+
+  public boolean canEdit(Project project, Identity user) {
+    if (project == null) return false;
+    return hasPermission(user, getProjectService().getManager(project.getId()));
+  }
+
+  public boolean hasPermission(Identity user, Set<String> permissions) {
+    if (permissions.contains(user.getUserId())) {
+      return true;
+    } else {
+      Set<MembershipEntry> memberships = new HashSet<MembershipEntry>();
+      for (String per : permissions) {
+        MembershipEntry entry = MembershipEntry.parse(per);
+        if (entry != null) {
+          memberships.add(entry);
+        }
+      }
+
+      for (MembershipEntry entry :  user.getMemberships()) {
+        if (memberships.contains(entry)) {
+          return true;
+        }
+      }
+    }
+
+    return false;
   }
   
   public static List<Project> getProjectTree(String space_group_id, ProjectService projectService) {
@@ -341,5 +375,9 @@ public final class ProjectUtil {
 
     return project;
   }
+  
+  private ProjectService getProjectService() {
+    ExoContainer container = ExoContainerContext.getCurrentContainer();
+    return container.getComponentInstanceOfType(ProjectService.class);
+  }
 }
-

@@ -16,12 +16,15 @@
 */
 package org.exoplatform.task.dao.jpa;
 
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Root;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import org.exoplatform.commons.utils.ListAccess;
@@ -43,6 +46,14 @@ public class ProjectDAOImpl extends CommonJPADAO<Project, Long> implements Proje
   private static final Logger LOG = Logger.getLogger("ProjectDAOImpl");
 
   public ProjectDAOImpl() {
+  }
+
+  @Override
+  public Set<String> getManager(long projectId) {
+    TypedQuery<String> query = getEntityManager().createNamedQuery("Project.getManager", String.class);
+    query.setParameter("projectId", projectId);
+
+    return new HashSet<String>(query.getResultList());
   }
 
   @Override

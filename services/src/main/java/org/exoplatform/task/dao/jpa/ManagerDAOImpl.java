@@ -21,24 +21,19 @@ package org.exoplatform.task.dao.jpa;
 
 import javax.persistence.TypedQuery;
 
-import org.exoplatform.commons.persistence.impl.GenericDAOJPAImpl;
-import org.exoplatform.commons.utils.ListAccess;
-import org.exoplatform.task.dao.CommentHandler;
-import org.exoplatform.task.domain.Comment;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
-/**
- * @author <a href="mailto:tuyennt@exoplatform.com">Tuyen Nguyen The</a>.
- */
-public class CommentDAOImpl extends CommonJPADAO<Comment, Long> implements CommentHandler {
+import org.exoplatform.task.dao.ManagerHandler;
+import org.exoplatform.task.domain.Manager;
 
+public class ManagerDAOImpl extends CommonJPADAO<Manager, Serializable> implements ManagerHandler {
   @Override
-  public ListAccess<Comment> findComments(long taskId) {
-    TypedQuery<Comment> query = getEntityManager().createNamedQuery("Comment.findCommentsOfTask", Comment.class);
-    TypedQuery<Long> count = getEntityManager().createNamedQuery("Comment.countCommentOfTask", Long.class);
+  public Set<String> getManager(long projectId) {
+    TypedQuery<String> query = getEntityManager().createNamedQuery("Manager.getManager", String.class);
+    query.setParameter("taskId", projectId);
 
-    query.setParameter("taskId", taskId);
-    count.setParameter("taskId", taskId);
-
-    return new JPAQueryListAccess<Comment>(Comment.class, count, query);
+    return new HashSet<String>(query.getResultList());
   }
 }
